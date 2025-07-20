@@ -165,19 +165,19 @@ export default async function ContinentPage({ params }: ContinentPageProps) {
                   {countries.reduce(
                     (total, country) => total + country.population,
                     0
-                  ) >= 1000000
+                  ) >= 1000000000
                     ? `${(
                         countries.reduce(
                           (total, country) => total + country.population,
                           0
-                        ) / 1000000
-                      ).toFixed(0)}M`
+                        ) / 1000000000
+                      ).toFixed(1)}B`
                     : `${(
                         countries.reduce(
                           (total, country) => total + country.population,
                           0
-                        ) / 1000
-                      ).toFixed(0)}K`}
+                        ) / 1000000
+                      ).toFixed(0)}M`}
                 </div>
                 <div className="text-sm text-gray-600 font-medium">
                   Total Population

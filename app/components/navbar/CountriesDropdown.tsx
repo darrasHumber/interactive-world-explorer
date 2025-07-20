@@ -74,7 +74,7 @@ export default function CountriesDropdown() {
         className={`flex items-center gap-3 px-6 py-3 rounded-2xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg ${
           isOpen
             ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg"
-            : "bg-white/80 hover:bg-white text-gray-700 hover:text-green-600 border border-gray-200 hover:border-green-300"
+            : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-green-400 border border-gray-600 hover:border-green-400"
         }`}
       >
         <span className="text-2xl">🌎</span>

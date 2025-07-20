@@ -13,7 +13,7 @@ export default function HomeIcon() {
       className={`group flex items-center justify-center w-12 h-12 rounded-2xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg ${
         isHome
           ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
-          : "bg-white/80 hover:bg-white text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-blue-300"
+          : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-blue-400 border border-gray-600 hover:border-blue-400"
       }`}
       title="Home"
     >

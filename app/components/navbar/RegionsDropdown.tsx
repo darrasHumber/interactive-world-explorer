@@ -183,7 +183,7 @@ export default function RegionsDropdown() {
         className={`flex items-center gap-3 px-6 py-3 rounded-2xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg ${
           isOpen
             ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg"
-            : "bg-white/80 hover:bg-white text-gray-700 hover:text-purple-600 border border-gray-200 hover:border-purple-300"
+            : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-purple-400 border border-gray-600 hover:border-purple-400"
         }`}
       >
         <span className="text-2xl">🗺️</span>
@@ -204,7 +204,6 @@ export default function RegionsDropdown() {
           />
         </svg>
       </button>
-
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute top-full right-0 mt-2 w-96 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/30 overflow-hidden z-50 animate-fade-in">
