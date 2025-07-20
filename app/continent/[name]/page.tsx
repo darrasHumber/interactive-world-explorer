@@ -212,9 +212,10 @@ export default async function ContinentPage({ params }: ContinentPageProps) {
             {/* Countries Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {countries.map((country) => (
-                <div
+                <Link
+                  href={`/country/${encodeURIComponent(country.name.common)}`}
                   key={country.cca3}
-                  className="group p-4 bg-white/70 hover:bg-white/90 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  className="group p-4 bg-white/70 hover:bg-white/90 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105 block"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
@@ -228,8 +229,21 @@ export default async function ContinentPage({ params }: ContinentPageProps) {
                         {country.capital?.[0] || "No capital"}
                       </p>
                     </div>
+                    <svg
+                      className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 
