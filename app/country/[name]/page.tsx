@@ -1,6 +1,7 @@
 import Link from "next/link";
 import getCountry from "../../../lib/getCountry";
 import CountryMapButtons from "@/app/components/CountryMapButtons";
+import Image from "next/image";
 
 interface CountryPageProps {
   params: Promise<{
@@ -241,10 +242,14 @@ export default async function CountryPage({ params }: CountryPageProps) {
           </h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="text-center">
-              <img
+              <Image
                 src={country.flags.svg}
                 alt={`Flag of ${country.name.common}`}
+                width={400}
+                height={300}
                 className="w-full max-w-md mx-auto rounded-xl shadow-lg"
+                priority={true}
+                unoptimized={true}
               />
               <p className="text-sm text-gray-600 mt-4">{country.flags.alt}</p>
             </div>
@@ -273,4 +278,53 @@ export default async function CountryPage({ params }: CountryPageProps) {
       </div>
     </div>
   );
+}
+// Add this at the end of your country page file, after the component
+
+export async function generateMetadata({ params }: CountryPageProps) {
+  const resolvedParams = await params;
+  const countryName = decodeURIComponent(resolvedParams.name);
+
+  // Fetch country data for metadata
+  let country: Country | null = null;
+  try {
+    const countryData = await getCountry(countryName);
+    country = countryData[0];
+  } catch (error) {
+    console.error("Error fetching country for metadata:", error);
+  }
+
+  if (!country) {
+    return {
+      title: `${countryName} - Country Not Found | World Explorer`,
+      description: `Information about ${countryName} could not be found. Explore other countries and continents on World Explorer.`,
+    };
+  }
+
+  const formatPopulationForMeta = (population: number) => {
+    if (population >= 1000000000) {
+      return `${(population / 1000000000).toFixed(1)} billion`;
+    } else if (population >= 1000000) {
+      return `${(population / 1000000).toFixed(1)} million`;
+    } else if (population >= 1000) {
+      return `${(population / 1000).toFixed(0)} thousand`;
+    }
+    return population.toLocaleString();
+  };
+
+  const capital = country.capital?.[0] || "No capital";
+  const population = formatPopulationForMeta(country.population);
+  const languages = Object.values(country.languages || {})
+    .slice(0, 3)
+    .join(", ");
+  const currencies = Object.values(country.currencies || {})
+    .map((curr) => curr.name)
+    .slice(0, 2)
+    .join(", ");
+
+  return {
+    title: `${country.name.common} - ${capital} | World Explorer`,
+    description: `Discover ${country.name.common} in ${country.region}. Population: ${population}. Capital: ${capital}. Languages: ${languages}. Learn about geography, culture, and travel information.`,
+    keywords: `${country.name.common}, ${capital}, ${country.region}, ${country.subregion}, population, geography, travel, ${languages}, ${currencies}`,
+  };
 }

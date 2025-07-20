@@ -277,3 +277,46 @@ export default async function ContinentPage({ params }: ContinentPageProps) {
     </div>
   );
 }
+
+// Add this at the end of your continent page file, after the component
+
+export async function generateStaticParams() {
+  return [
+    { name: "north-america" },
+    { name: "south-america" },
+    { name: "europe" },
+    { name: "africa" },
+    { name: "asia" },
+    { name: "australia" },
+  ];
+}
+
+export async function generateMetadata({ params }: ContinentPageProps) {
+  const resolvedParams = await params;
+  const continentName =
+    continentNames[resolvedParams.name] || resolvedParams.name;
+
+  // Get continent data for description
+  const apiCall = continentToApiCall[resolvedParams.name];
+  let countriesCount = 0;
+
+  try {
+    let countries: Country[] = [];
+    if (apiCall) {
+      if (apiCall.type === "subregion") {
+        countries = await getRegionCountries(apiCall.value);
+      } else {
+        countries = await getContinentCountries(apiCall.value);
+      }
+      countriesCount = countries.length;
+    }
+  } catch (error) {
+    console.error("Error fetching countries for metadata:", error);
+  }
+
+  return {
+    title: `${continentName} - Countries & Travel Guide | World Explorer`,
+    description: `Discover ${continentName} with ${countriesCount} countries and territories. Explore detailed information about each country including capitals, populations, languages, and more.`,
+    keywords: `${continentName}, countries, travel, geography, world map, capitals, population, ${continentName.toLowerCase()} countries`,
+  };
+}

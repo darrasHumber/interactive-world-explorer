@@ -223,3 +223,106 @@ export default async function RegionPage({ params }: RegionPageProps) {
     </div>
   );
 }
+
+// Add this at the end of your region page file, after the component
+
+export async function generateStaticParams() {
+  return [
+    { name: "northern-europe" },
+    { name: "western-europe" },
+    { name: "southern-europe" },
+    { name: "eastern-europe" },
+    { name: "central-america" },
+    { name: "caribbean" },
+    { name: "north-america" },
+    { name: "south-america" },
+    { name: "western-africa" },
+    { name: "eastern-africa" },
+    { name: "northern-africa" },
+    { name: "middle-africa" },
+    { name: "southern-africa" },
+    { name: "western-asia" },
+    { name: "central-asia" },
+    { name: "eastern-asia" },
+    { name: "south-eastern-asia" },
+    { name: "southern-asia" },
+    { name: "australia-and-new-zealand" },
+    { name: "melanesia" },
+    { name: "micronesia" },
+    { name: "polynesia" },
+  ];
+}
+
+export async function generateMetadata({ params }: RegionPageProps) {
+  const resolvedParams = await params;
+  const regionName = regionNames[resolvedParams.name] || resolvedParams.name;
+
+  // Get region description
+  const regionDescriptions: { [key: string]: string } = {
+    "northern-europe":
+      "Nordic and Baltic countries known for high quality of life, social welfare, and stunning natural landscapes.",
+    "western-europe":
+      "Economic powerhouse including France, Germany, and UK with rich history and cultural heritage.",
+    "southern-europe":
+      "Mediterranean region famous for ancient civilizations, beautiful coastlines, and culinary traditions.",
+    "eastern-europe":
+      "Diverse region of Slavic nations with complex history and emerging economies.",
+    "central-america":
+      "Bridge between North and South America with tropical climate and ancient Mayan heritage.",
+    caribbean:
+      "Paradise islands known for beautiful beaches, vibrant culture, and warm tropical climate.",
+    "north-america":
+      "Developed region including USA, Canada, and Mexico with diverse landscapes and economies.",
+    "south-america":
+      "Home to Amazon rainforest, Andes mountains, and rich indigenous cultures.",
+    "western-africa":
+      "Atlantic coast region with diverse cultures, natural resources, and growing economies.",
+    "eastern-africa":
+      "Birthplace of humanity with incredible wildlife, Great Rift Valley, and diverse cultures.",
+    "northern-africa":
+      "Sahara desert region with ancient civilizations and Mediterranean coastline.",
+    "middle-africa":
+      "Central rainforest region with incredible biodiversity and mineral resources.",
+    "southern-africa":
+      "Mining-rich region with diverse wildlife and stunning landscapes.",
+    "western-asia":
+      "Middle East region with ancient civilizations, oil resources, and strategic importance.",
+    "central-asia":
+      "Landlocked region along the historic Silk Road with nomadic traditions.",
+    "eastern-asia":
+      "Economic powerhouse including China, Japan, and Korea with ancient cultures.",
+    "south-eastern-asia":
+      "Tropical region with incredible biodiversity, islands, and growing economies.",
+    "southern-asia":
+      "Indian subcontinent with diverse religions, languages, and billion+ population.",
+    "australia-and-new-zealand":
+      "Oceania region with unique wildlife, landscapes, and developed economies.",
+    melanesia:
+      "Pacific island groups with incredible cultural and biological diversity.",
+    micronesia:
+      "Small Pacific islands with unique cultures and marine environments.",
+    polynesia:
+      "Pacific triangle including Hawaii with rich maritime culture and traditions.",
+  };
+
+  // Fetch countries count
+  let countriesCount = 0;
+  try {
+    const countries = await getRegionCountries(regionName);
+    countriesCount = countries.length;
+  } catch (error) {
+    console.error("Error fetching countries for metadata:", error);
+  }
+
+  const description =
+    regionDescriptions[resolvedParams.name] ||
+    `Explore the ${regionName} region and discover its countries, cultures, and geography.`;
+
+  return {
+    title: `${regionName} Region - ${countriesCount} Countries Guide | World Explorer`,
+    description: `Discover ${regionName} with ${countriesCount} countries. ${description} Explore detailed country information, maps, and travel insights.`,
+    keywords: `${regionName}, region, countries, geography, travel, culture, ${regionName
+      .toLowerCase()
+      .replace(/\s+/g, "-")} countries`,
+  };
+}
